@@ -12,7 +12,7 @@ rl.on('line', async () => {
   
   // Directly call your contract execution logic here
   try {
-    const targetEscrowId = 0;
+    const targetEscrowId = 1;
     const simulatedUsage = 1250000; // 1,250 Liters in mL
     
     console.log("Sending automated penalty transaction to Arbitrum Sepolia...");
