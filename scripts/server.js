@@ -16,9 +16,7 @@ rl.on('line', async () => {
     // 1. Read setup from .env
     const privateKey = process.env.PRIVATE_KEY;
     const rpcUrl = process.env.ARBITRUM_SEPOLIA_RPC;
-    
-    // Paste your deployed contract address string here if it's not in .env
-    const contractAddress = process.env.CONTRACT_ADDRESS || "YOUR_DEPLOYED_CONTRACT_ADDRESS_HERE";
+    const contractAddress = process.env.CONTRACT_ADDRESS || "0xf3B1C5890cc0dd1bc3b9b8f2088b1734e2ccc95";
 
     // 2. Initialize provider & wallet signer
     const provider = new ethers.JsonRpcProvider(rpcUrl);
@@ -31,7 +29,7 @@ rl.on('line', async () => {
     const simulatedUsage = 1250000; // 1,250 Liters in mL
 
     console.log("Sending automated penalty transaction to Arbitrum Sepolia...");
-    const tx = await hydroProofContract.triggerPenalty(targetEscrowId, simulatedUsage);
+    const tx = await hydroProofContract.settleEscrowWithWaterData(targetEscrowId, simulatedUsage);
     console.log(`✅ Transaction Hash: ${tx.hash}`);
 
     const receipt = await tx.wait();
