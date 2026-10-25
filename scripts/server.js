@@ -13,16 +13,15 @@ rl.on('line', async () => {
   console.log("\n🚨 [SIMULATED TRIGGER] Water usage crossed 1,250 Liters!");
 
   try {
-    // 1. Read setup from .env
     const privateKey = process.env.PRIVATE_KEY;
     const rpcUrl = process.env.ARBITRUM_SEPOLIA_RPC;
-    const contractAddress = process.env.CONTRACT_ADDRESS || "0xf3B1C5890cc0dd1bc3b9b8f2088b1734e2ccc95";
+    
+    // Hardcoded directly to prevent any .env quote or spacing issues
+    const contractAddress = "0xf3B1C5890cc0dd1bc3b9b8f2088b1734e2ccc95";
 
-    // 2. Initialize provider & wallet signer
     const provider = new ethers.JsonRpcProvider(rpcUrl);
     const wallet = new ethers.Wallet(privateKey, provider);
 
-    // 3. Attach to contract instance
     const hydroProofContract = await ethers.getContractAt("HydroProof", contractAddress, wallet);
 
     const targetEscrowId = 1;
