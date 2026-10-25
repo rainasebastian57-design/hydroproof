@@ -1,4 +1,4 @@
-// scripts/oracleServer.js
+require('dotenv').config();
 const express = require('express');
 const { ethers } = require('hardhat');
 const cors = require('cors');
@@ -8,7 +8,8 @@ app.use(express.json());
 app.use(cors());
 
 const PORT = 3001;
-const HYDROPROOF_ADDRESS = "YOUR_DEPLOYED_CONTRACT_ADDRESS"; 
+// Paste your deployed contract address here directly, or define it in your .env
+const HYDROPROOF_ADDRESS = process.env.CONTRACT_ADDRESS || "0xYourActualContractAddressHere"; 
 
 app.post('/api/telemetry', async (req, res) => {
   const { deviceId, escrowId, totalLitersConsumed, signature } = req.body;
@@ -18,7 +19,13 @@ app.post('/api/telemetry', async (req, res) => {
   console.log(`Water Usage: ${totalLitersConsumed.toLocaleString()} Liters`);
 
   try {
-    const [oracleSigner] = await ethers.getSigners();
+    // Setup provider and wallet using your exact .env keys
+    const privateKey = process.env.PRIVATE_KEY;
+    const rpcUrl = process.env.ARBITRUM_SEPOLIA_RPC;
+    
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+    const oracleSigner = new ethers.Wallet(privateKey, provider);
+
     const hydroProof = await ethers.getContractAt("HydroProof", HYDROPROOF_ADDRESS, oracleSigner);
 
     // Fetch threshold from contract
